@@ -1,5 +1,10 @@
 #ifndef VDISC_H
 #define VDISC_H
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <fstream>
+using namespace std;
 //This header file contain basic operations for handling our virtual disc
 /*------------------dics-structure-----------------------
 ***Suberbolck
@@ -9,10 +14,10 @@
 ***node
 *4B - node id
 *256B - file name
-*1B - in_use flag(can bo 0 - not in use, 1 - in use, begining of the file, or 2 - in use, continuation of the file)
-*1B -is_last flag, 1 if it is last node, 0 if not
 *4B - file size
 *4B - next node (if does not exist equals 0)
+*1B - in_use flag(can bo 0 - not in use, 1 - in use, begining of the file, or 2 - in use, continuation of the file)
+*1B -is_last flag, 1 if it is last node, 0 if not
 *2b - offset
 *** data block
 *2kB
@@ -20,15 +25,25 @@
 //user interface -- contain main loop of the menagement system
 void interface();
 
-int createVDisc(std::string name, unsigned int size);
+unsigned int nodeOffset(unsigned int id, fstream &vdisc);
 
-int openVDisc(std::string name);
+unsigned int findNextFreeNode(fstream &vdisc);
 
-void closeVDisc(std::string name);
+unsigned int dataBlockOffset(fstream &vdisc, unsigned int nodeId);
 
-int deleteVDisc(std::string name);
+unsigned int findNodeId(unsigned int id, fstream &vdisc);
 
-void renameVDisc(std::string oldName, std::string newName);
+int createVDisc(string name, unsigned int size);
+
+int openVDisc(string name);
+
+int copyToVdisc(string fileName, string discName);
+
+void closeVDisc(string name);
+
+int deleteVDisc(string name);
+
+void renameVDisc(string oldName, string newName);
 
 
 
